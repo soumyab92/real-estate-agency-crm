@@ -1,0 +1,359 @@
+/* Dashboard View Styles */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-card h3 {
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-bar-row {
+  display: grid;
+  grid-template-columns: minmax(80px, 110px) 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.metric-bar-name {
+  font-weight: 500;
+  color: var(--ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-bar-track {
+  height: 10px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.metric-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-bar-val {
+  text-align: right;
+  font-weight: 700;
+  color: var(--ink-primary);
+  font-family: var(--font-body);
+}
+
+/* Pipeline / Kanban View Styles */
+.pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  min-height: calc(100vh - 220px);
+}
+
+.kanban-column {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  border: 2px dashed transparent;
+}
+
+.kanban-column.drag-over {
+  border-color: var(--brand-accent);
+  background: var(--brand-accent-soft);
+}
+
+.kanban-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 8px;
+}
+
+.column-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.column-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.column-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-surface);
+  color: var(--ink-secondary);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.column-sum {
+  font-size: 0.8rem;
+  color: var(--ink-tertiary);
+  font-weight: 600;
+}
+
+.kanban-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+}
+
+.lead-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--brand-accent);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: grab;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  user-select: none;
+}
+
+.lead-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+.lead-card:active {
+  cursor: grabbing;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.lead-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink-primary);
+}
+
+.lead-meta {
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  margin-bottom: 8px;
+}
+
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lead-budget {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--brand-primary);
+}
+
+.lead-agent {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-tertiary);
+}
+
+/* Listings Inventory Grid */
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.property-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.property-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.property-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.property-title {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.property-location {
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+}
+
+.property-body {
+  padding: 16px;
+  flex: 1;
+}
+
+.property-specs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+}
+
+.property-price {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.property-footer {
+  padding: 12px 16px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Task Management */
+.task-quick-add {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.task-add-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+@media (max-width: 768px) {
+  .task-add-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .task-add-grid .task-span-full {
+    grid-column: 1 / -1;
+  }
+}
+
+.task-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* Offer Sheet */
+.offer-sheet-paper {
+  background: #ffffff;
+  color: #122119;
+  border: 1px solid #dbe4dd;
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 16px 0;
+  white-space: pre-wrap;
+}
+
+/* Contact Details 360 View */
+.contact-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  padding-bottom: 8px;
+  margin: 18px 0 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.9rem;
+}
+
+.list-item-row:last-child {
+  border-bottom: none;
+}
+
+/* Print Styles */
+@media print {
+  .sidebar, .topbar, .modal-footer, .btn, .no-print {
+    display: none !important;
+  }
+  
+  body, .app-layout, .main-wrapper, dialog.modal {
+    background: #ffffff !important;
+    color: #000000 !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  .offer-sheet-paper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
