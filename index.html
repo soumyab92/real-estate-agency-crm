@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hearth CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eff2f0;--panel:#fff;--ink:#18271f;--mute:#617268;--line:#d6ded9;--brand:#1f4a3d;--bink:#fff;--gold:#c9962b;--chip:#e3ebe6;--good:#1f7a4d;--bad:#b3392f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a17;--panel:#17261f;--ink:#e6efe9;--mute:#93a99d;--line:#274034;--brand:#6fbf9a;--bink:#0b1f17;--chip:#1f362b;--good:#5cc891;--bad:#f08a80}}
+:root[data-theme="dark"]{--bg:#101a17;--panel:#17261f;--ink:#e6efe9;--mute:#93a99d;--line:#274034;--brand:#6fbf9a;--bink:#0b1f17;--chip:#1f362b;--good:#5cc891;--bad:#f08a80}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Instrument Sans",system-ui,sans-serif;min-height:100vh}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0}h3{font-size:16px}
+.app{display:grid;grid-template-columns:200px 1fr;min-height:100vh}
+nav{background:var(--brand);color:var(--bink);padding:22px 12px;display:flex;flex-direction:column;gap:4px}
+nav .logo{font:700 24px Fraunces,Georgia,serif;padding:0 10px 16px}
+nav a{color:inherit;text-decoration:none;padding:9px 12px;border-radius:8px;opacity:.8;font-weight:500;white-space:nowrap}
+nav a:hover{opacity:1}nav a.on{background:rgba(255,255,255,.2);opacity:1}
+nav button{margin-top:auto;background:none;border:1px solid currentColor;color:inherit;border-radius:8px;padding:8px;cursor:pointer;opacity:.8}
+main{padding:24px 28px;min-width:0}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.top h1{font-size:28px;flex:1;min-width:160px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+.top input,.top select{width:auto;max-width:200px}
+.pri{background:var(--brand);color:var(--bink);border:0;border-radius:8px;padding:9px 16px;font:600 15px "Instrument Sans",sans-serif;cursor:pointer}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 14px;cursor:pointer;font:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi small,.mute{color:var(--mute)}.kpi b{display:block;font:700 24px Fraunces,Georgia,serif}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.br{display:grid;grid-template-columns:90px 1fr auto;gap:8px;align-items:center;margin-top:9px;font-size:14px}
+.br i{display:block;height:10px;border-radius:5px;background:var(--brand)}
+.board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px}
+.col{background:var(--chip);border-radius:12px;padding:10px;min-height:280px}
+.col.over{outline:2px dashed var(--brand)}
+.col h3{display:flex;justify-content:space-between;padding:4px 6px 10px;font-size:15px}.col h3 span{color:var(--mute);font:500 13px "Instrument Sans",sans-serif}
+.card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:grab;width:100%;text-align:left;display:block;color:inherit;font:inherit}
+.card b{display:block}.card small{color:var(--mute)}.card .row{display:flex;justify-content:space-between;margin-top:6px;font-weight:600}
+.tbl{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+th{color:var(--mute);font-weight:500;font-size:13px}tr:last-child td{border:0}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--chip)}
+.tag{display:inline-block;background:var(--chip);border-radius:20px;padding:2px 10px;font-size:13px}.ok{color:var(--good)}.late{color:var(--bad)}
+.empty{padding:26px;text-align:center;color:var(--mute)}
+.pk{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.pk .box>b{display:block;font:700 20px Fraunces,Georgia,serif;margin:6px 0}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:22px;width:min(580px,94vw);max-height:90vh;overflow:auto}
+dialog::backdrop{background:rgba(5,20,15,.5)}
+dialog label{display:block;margin:10px 0 4px;font-weight:500;font-size:14px}
+dialog h3{margin:18px 0 4px;padding-top:12px;border-top:1px solid var(--line)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.g3{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px}
+.acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
+.add{display:flex;gap:8px;margin-top:8px}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99}
+.toast.show{opacity:1}
+@media (max-width:760px){.app{grid-template-columns:1fr}nav{flex-direction:row;overflow-x:auto;padding:10px;align-items:center}nav .logo{padding:0 10px 0 0}nav button{margin:0 0 0 auto}main{padding:16px 12px}.g3{grid-template-columns:1fr 1fr}.top input,.top select{max-width:none;flex:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav>
+<div class="logo">Hearth</div>
+<a href="#dashboard" data-v="dashboard">Dashboard</a><a href="#pipeline" data-v="pipeline">Pipeline</a><a href="#deals" data-v="deals">Closed deals</a><a href="#clients" data-v="clients">Contacts</a><a href="#tasks" data-v="tasks">Follow-ups</a><a href="#listings" data-v="listings">Listings</a>
+<button id="theme" type="button">Switch theme</button>
+</nav>
+<main>
+<div class="top"><h1 id="title"></h1><input id="q" type="search" placeholder="Search name or area" aria-label="Search"><select id="ag" aria-label="Agent"></select><button class="ghost" id="csv" type="button">Export CSV</button><button class="pri" id="add" type="button">New lead</button></div>
+<div id="view"></div>
+</main>
+</div>
+<dialog id="dlg"></dialog><div class="toast" id="toast" role="status"></div>
+<script>
+const S=["New lead","Site visit","Negotiation","Closed"],AG=["Ananya","Rohit","Meera"],CT=["Call","Email","WhatsApp","Meeting"],KD=["Buyer","Renter","Seller"],TK=["Call","Site visit","Paperwork","Follow-up"];
+const AR=["Salt Lake","New Town","Ballygunge","Behala","Garia","Rajarhat"];
+const V={dashboard:"Dashboard",pipeline:"Lead pipeline",deals:"Closed deals",clients:"Contacts",tasks:"Follow-ups",listings:"Listings"};
+const $=s=>document.querySelector(s),d=$("#dlg");
+const m=n=>n>=1e7?"₹"+(n/1e7).toFixed(2)+" Cr":n>=1e5?"₹"+(n/1e5).toFixed(1)+" L":"₹"+Math.round(n).toLocaleString("en-IN");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const day=o=>new Date(Date.now()+o*864e5).toISOString().slice(0,10);
+const fmt=x=>new Date(x).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+function seed(){return{n:30,props:[
+{id:1,t:"Skyline residency, Sector V",area:"Salt Lake",bhk:"3 BHK",mode:"Sale",price:13500000,sqft:1480,status:"Available"},
+{id:2,t:"Lakeview apartments",area:"New Town",bhk:"2 BHK",mode:"Sale",price:8200000,sqft:1050,status:"Available"},
+{id:3,t:"Eco Park heights",area:"New Town",bhk:"3 BHK",mode:"Sale",price:12000000,sqft:1380,status:"Available"},
+{id:4,t:"Gariahat court",area:"Ballygunge",bhk:"4 BHK",mode:"Sale",price:31000000,sqft:2400,status:"Available"},
+{id:5,t:"Ho Chi Minh Sarani flat",area:"Ballygunge",bhk:"2 BHK",mode:"Rent",price:38000,sqft:1100,status:"Available"},
+{id:6,t:"Sarsuna garden homes",area:"Behala",bhk:"3 BHK",mode:"Sale",price:9200000,sqft:1320,status:"Under offer"},
+{id:7,t:"Rajarhat greens",area:"Rajarhat",bhk:"3 BHK",mode:"Sale",price:10800000,sqft:1290,status:"Sold"},
+{id:8,t:"Garia station studio",area:"Garia",bhk:"1 BHK",mode:"Rent",price:14000,sqft:520,status:"Available"},
+{id:9,t:"Sector III corner flat",area:"Salt Lake",bhk:"2 BHK",mode:"Rent",price:32000,sqft:980,status:"Available"}],
+leads:[
+{id:1,name:"Ritika Sen",phone:"98300 11122",kind:"Buyer",area:"Salt Lake",type:"3 BHK",budget:14000000,rate:2,stage:"New lead",agent:"Ananya",date:day(45),note:"Wants a school nearby and a car park.",pay:[],log:[{t:"Email",txt:"Enquiry via website",at:day(-2)}]},
+{id:2,name:"Arjun Mehta",phone:"98300 33344",kind:"Buyer",area:"New Town",type:"2 BHK",budget:8500000,rate:2,stage:"New lead",agent:"Rohit",date:day(60),note:"First home, home loan pre-approved.",pay:[],log:[{t:"Call",txt:"Shared 3 listings",at:day(-1)}]},
+{id:3,name:"Sharmila Das",phone:"98300 55566",kind:"Renter",area:"Ballygunge",type:"2 BHK",budget:40000,rate:100,stage:"Site visit",agent:"Meera",date:day(20),note:"Moving for work, needs by next month.",pay:[],log:[{t:"WhatsApp",txt:"Visit booked for Saturday",at:day(-3)}]},
+{id:4,name:"Kabir Nanda",phone:"98300 77788",kind:"Buyer",area:"Ballygunge",type:"4 BHK",budget:32000000,rate:1.5,stage:"Site visit",agent:"Ananya",date:day(40),note:"Prefers older, larger apartments.",pay:[],log:[{t:"Meeting",txt:"Viewed two flats",at:day(-4)}]},
+{id:5,name:"Ishita Roy",phone:"98300 99900",kind:"Seller",area:"Behala",type:"3 BHK",budget:9500000,rate:1,stage:"Negotiation",agent:"Rohit",date:day(25),note:"Buyer offered 90 L, she wants 94 L.",pay:[],log:[{t:"Call",txt:"Discussed counter-offer",at:day(-1)}]},
+{id:6,name:"Dev Malhotra",phone:"98311 22233",kind:"Buyer",area:"Rajarhat",type:"3 BHK",budget:10800000,rate:2,stage:"Closed",agent:"Meera",date:day(-20),note:"Registration completed.",pay:[{amt:216000,at:day(-18),k:"Full commission"}],log:[{t:"Email",txt:"Sale deed received",at:day(-18)}]},
+{id:7,name:"Neha Kapoor",phone:"98311 44455",kind:"Buyer",area:"New Town",type:"2 BHK",budget:7800000,rate:1.5,stage:"Closed",agent:"Ananya",date:day(-8),note:"Agreement signed, balance commission pending.",pay:[{amt:60000,at:day(-7),k:"Advance"}],log:[{t:"WhatsApp",txt:"Token paid to seller",at:day(-9)}]}],
+tasks:[{id:21,lead:1,k:"Call",txt:"Send Salt Lake shortlist",due:day(1),done:false},{id:22,lead:7,k:"Paperwork",txt:"Collect balance commission",due:day(10),done:false},{id:23,lead:5,k:"Call",txt:"Revert with buyer's final offer",due:day(-1),done:false},{id:24,lead:3,k:"Site visit",txt:"Take her to Ho Chi Minh Sarani flat",due:day(2),done:false}]}}
+let D;try{D=JSON.parse(localStorage.getItem("re1"))}catch(e){}D=D||seed();
+const save=()=>{try{localStorage.setItem("re1",JSON.stringify(D))}catch(e){}};
+const paid=l=>l.pay.reduce((a,p)=>a+p.amt,0),com=l=>l.budget*l.rate/100,get=id=>D.leads.find(l=>l.id===id);
+const tag=l=>{const b=com(l)-paid(l);return b<=0?'<span class="tag ok">Commission received</span>':`<span class="tag">Due ${m(b)}</span>`};
+const price=p=>m(p.price)+(p.mode==="Rent"?" /month":"");
+const match=l=>l.kind==="Seller"?[]:D.props.filter(p=>p.status==="Available"&&p.mode===(l.kind==="Renter"?"Rent":"Sale")&&p.price<=l.budget*1.1).sort((a,b)=>(b.area===l.area)-(a.area===l.area)).slice(0,3);
+let view="dashboard",term="",ag="";
+const toast=t=>{const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1800)};
+const dlg=h=>{d.innerHTML=h;if(!d.open)d.showModal()};
+const copy=(el,t)=>{el.select();try{navigator.clipboard.writeText(t).then(()=>toast("Copied"),()=>toast("Press Ctrl+C to copy"))}catch(e){toast("Press Ctrl+C to copy")}};
+$("#ag").innerHTML='<option value="">All agents</option>'+AG.map(a=>`<option>${a}</option>`).join("");
+
+function render(){
+ document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===view));
+ $("#title").textContent=V[view];
+ const f=D.leads.filter(l=>(l.name+l.area).toLowerCase().includes(term)&&(!ag||l.agent===ag));
+ ({dashboard:dash,pipeline,deals,clients,tasks,listings})[view](f);
+}
+const bars=(o,fm=m)=>{const x=Math.max(1,...Object.values(o));return Object.entries(o).map(([k,v])=>`<div class="br"><span>${esc(k)}</span><i style="width:${v/x*100}%"></i><b>${fm(v)}</b></div>`).join("")||'<div class="empty">No data yet</div>'};
+function dash(f){
+ const cl=f.filter(l=>l.stage==="Closed"),op=f.filter(l=>l.stage!=="Closed"),sum=(a,fn)=>a.reduce((x,l)=>x+fn(l),0);
+ const mo={},ar={},st={},lc={};
+ cl.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(l=>{const k=new Date(l.date).toLocaleDateString("en-IN",{month:"short",year:"2-digit"});mo[k]=(mo[k]||0)+com(l);ar[l.agent]=(ar[l.agent]||0)+com(l)});
+ f.forEach(l=>{st[l.stage]=(st[l.stage]||0)+com(l);lc[l.area]=(lc[l.area]||0)+1});
+ const late=D.tasks.filter(t=>!t.done&&t.due<day(0)).length,k=(a,b)=>`<div class="box kpi"><small>${a}</small><b>${b}</b></div>`;
+ $("#view").innerHTML=`<div class="kpis">${k("Expected commission",m(sum(op,com)))}${k("Earned commission",m(sum(cl,com)))}${k("Collected",m(sum(cl,paid)))}${k("Outstanding",m(sum(cl,l=>com(l)-paid(l))))}${k("Lead to close",f.length?Math.round(cl.length/f.length*100)+"%":"0%")}${k("Overdue follow-ups",`<span class="${late?"late":""}">${late}</span>`)}</div>
+ <div class="cols"><div class="box"><h3>Commission earned by month</h3>${bars(mo)}</div><div class="box"><h3>Commission by stage</h3>${bars(st)}</div><div class="box"><h3>Leads by locality</h3>${bars(lc,v=>v)}</div><div class="box"><h3>Commission earned by agent</h3>${bars(ar)}</div></div>`;
+}
+function pipeline(f){
+ let h='<div class="board">';
+ S.forEach(s=>{const c=f.filter(l=>l.stage===s);
+  h+=`<div class="col" data-stage="${s}"><h3>${s}<span>${c.length} leads</span></h3>`+c.map(l=>`<button class="card" draggable="true" data-id="${l.id}"><b>${esc(l.name)}</b><small>${l.kind} · ${esc(l.type)} · ${esc(l.area)}</small><div class="row"><span>${m(l.budget)}${l.kind==="Renter"?"/mo":""}</span><small>${esc(l.agent)}</small></div></button>`).join("")+"</div>"});
+ $("#view").innerHTML=h+'</div><p class="mute">Drag cards between stages. On touch screens, open a card and change its stage.</p>';
+ document.querySelectorAll(".card").forEach(c=>{c.onclick=()=>open_(+c.dataset.id);c.ondragstart=e=>e.dataTransfer.setData("text/plain",c.dataset.id)});
+ document.querySelectorAll(".col").forEach(c=>{c.ondragover=e=>{e.preventDefault();c.classList.add("over")};c.ondragleave=()=>c.classList.remove("over");c.ondrop=e=>{e.preventDefault();move(+e.dataTransfer.getData("text/plain"),c.dataset.stage);render()}});
+}
+function move(id,s){const l=get(id);if(!l||l.stage===s)return;l.stage=s;l.log.unshift({t:"Stage",txt:"Moved to "+s,at:day(0)});save();toast(l.name+" moved to "+s)}
+function table(rows,head,fn){
+ if(!rows.length){$("#view").innerHTML='<div class="box empty">Nothing matches. Clear the search or agent filter.</div>';return}
+ $("#view").innerHTML=`<div class="tbl"><table><thead><tr>${head.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(l=>`<tr data-id="${l.id}">${fn(l)}</tr>`).join("")}</tbody></table></div>`;
+ document.querySelectorAll("tbody tr").forEach(r=>r.onclick=()=>open_(+r.dataset.id));
+}
+const deals=f=>table(f.filter(l=>l.stage==="Closed"),["Client","Type","Area","Deal value","Commission","Collected","Status"],l=>`<td>${esc(l.name)}</td><td>${l.kind}</td><td>${esc(l.area)}</td><td>${m(l.budget)}</td><td>${m(com(l))}</td><td>${m(paid(l))}</td><td>${tag(l)}</td>`);
+const clients=f=>table(f,["Name","Phone","Looking to","Area","Stage","Agent","Last contact"],l=>`<td>${esc(l.name)}</td><td>${esc(l.phone)}</td><td>${l.kind} · ${esc(l.type)}</td><td>${esc(l.area)}</td><td><span class="tag">${l.stage}</span></td><td>${esc(l.agent)}</td><td>${l.log[0]?fmt(l.log[0].at):"None"}</td>`);
+function tasks(){
+ const ts=D.tasks.slice().sort((a,b)=>a.done-b.done||a.due.localeCompare(b.due)),od=t=>!t.done&&t.due<day(0);
+ $("#view").innerHTML=`<div class="box" style="margin-bottom:12px"><div class="g3"><input id="tt" placeholder="e.g. Book site visit" aria-label="Task"><select id="tk" aria-label="Type">${TK.map(x=>`<option>${x}</option>`).join("")}</select><input id="td" type="date" value="${day(1)}" aria-label="Due"><select id="tl" aria-label="Client">${D.leads.map(l=>`<option value="${l.id}">${esc(l.name)}</option>`).join("")}</select><button class="pri" id="ta" type="button">Add</button></div></div>`+
+ (ts.length?`<div class="tbl"><table><thead><tr><th>Done</th><th>Task</th><th>Client</th><th>Due</th></tr></thead><tbody>${ts.map(t=>{const l=get(t.lead);return`<tr data-id="${t.lead}"><td><input type="checkbox" data-t="${t.id}" ${t.done?"checked":""} style="width:auto" aria-label="Mark done"></td><td ${t.done?'style="text-decoration:line-through;opacity:.6"':""}><span class="tag">${t.k}</span> ${esc(t.txt)}</td><td>${l?esc(l.name):"Deleted client"}</td><td class="${od(t)?"late":""}">${fmt(t.due)}${od(t)?" (overdue)":""}</td></tr>`}).join("")}</tbody></table></div>`:'<div class="box empty">No follow-ups. Add one above.</div>');
+ $("#ta").onclick=()=>{const x=$("#tt").value.trim();if(!x||!$("#tl").value)return toast("Enter a task and pick a client");D.tasks.push({id:D.n++,lead:+$("#tl").value,k:$("#tk").value,txt:x,due:$("#td").value||day(1),done:false});save();toast("Follow-up added");render()};
+ document.querySelectorAll("tbody tr").forEach(r=>r.onclick=e=>{if(e.target.dataset.t)return;open_(+r.dataset.id)});
+ document.querySelectorAll("[data-t]").forEach(c=>c.onchange=()=>{D.tasks.find(t=>t.id===+c.dataset.t).done=c.checked;save();render()});
+}
+function listings(){
+ $("#view").innerHTML='<div class="pk">'+D.props.map(p=>`<div class="box"><h3>${esc(p.t)}</h3><small class="mute">${p.area} · ${p.bhk} · ${p.sqft} sq ft · For ${p.mode.toLowerCase()}</small><b>${price(p)}</b><select data-p="${p.id}" aria-label="Status">${["Available","Under offer","Sold"].map(s=>`<option ${s===p.status?"selected":""}>${s}</option>`).join("")}</select></div>`).join("")+"</div>";
+ document.querySelectorAll("[data-p]").forEach(s=>s.onchange=()=>{D.props.find(p=>p.id===+s.dataset.p).status=s.value;save();toast("Status updated")});
+}
+
+const F=[["name","Name","text"],["phone","Phone","text"],["area","Preferred area","text"],["type","Requirement","text"],["budget","Budget or deal value (₹)","number"],["rate","Commission %","number"],["date","Target date","date"]];
+const sel=(id,n,arr,v)=>`<div><label for="${id}">${n}</label><select id="${id}">${arr.map(a=>`<option ${a===v?"selected":""}>${a}</option>`).join("")}</select></div>`;
+function apply(l){F.forEach(([k,,t])=>{const v=$("#f_"+k).value;l[k]=t==="number"?+v||0:v});l.kind=$("#f_kind").value;l.agent=$("#f_agent").value;l.note=$("#f_note").value}
+function open_(id){
+ const l=get(id),lt=D.tasks.filter(t=>t.lead===id&&!t.done),mt=match(l),due=com(l)-paid(l);
+ dlg(`<h2>${esc(l.name)}</h2>
+ <div class="g">${F.map(([k,n,t])=>`<div><label for="f_${k}">${n}</label><input id="f_${k}" type="${t}" value="${esc(l[k])}"></div>`).join("")}${sel("f_kind","Looking to",KD,l.kind)}${sel("f_agent","Agent",AG,l.agent)}${sel("f_stage","Stage",S,l.stage)}</div>
+ <label for="f_note">Notes</label><textarea id="f_note" rows="2">${esc(l.note)}</textarea>
+ <h3>Matching listings</h3>
+ ${mt.map(p=>`<div class="li"><span>${esc(p.t)} · ${p.area}${p.area===l.area?' <span class="tag">Same area</span>':""}</span><b>${price(p)}</b></div>`).join("")||`<div class="mute">${l.kind==="Seller"?"Sellers are not matched to listings.":"No available listings within budget."}</div>`}
+ <h3>Commission <span class="mute">· ${m(paid(l))} of ${m(com(l))}${due>0?", "+m(due)+" due":""}</span></h3>
+ ${l.pay.map(p=>`<div class="li"><span>${esc(p.k)} · ${fmt(p.at)}</span><b>${m(p.amt)}</b></div>`).join("")||'<div class="mute">No receipts recorded.</div>'}
+ <div class="add"><input id="pa" type="number" min="1" placeholder="Amount (₹)" aria-label="Amount"><button class="ghost" id="pb" type="button">Record receipt</button></div>
+ <h3>Follow-ups</h3>
+ ${lt.map(t=>`<div class="li"><span><span class="tag">${t.k}</span> ${esc(t.txt)}</span><span class="${t.due<day(0)?"late":"mute"}">${fmt(t.due)}</span></div>`).join("")||'<div class="mute">None open.</div>'}
+ <div class="add"><select id="kk" style="width:130px" aria-label="Type">${TK.map(x=>`<option>${x}</option>`).join("")}</select><input id="kt" placeholder="New follow-up" aria-label="Follow-up"><input id="kd" type="date" value="${day(2)}" style="width:150px" aria-label="Due"><button class="ghost" id="kb" type="button">Add</button></div>
+ <h3>Communication log</h3>
+ ${l.log.slice(0,5).map(x=>`<div class="li"><span><span class="tag">${x.t}</span> ${esc(x.txt)}</span><span class="mute">${fmt(x.at)}</span></div>`).join("")||'<div class="mute">No contact yet.</div>'}
+ <div class="add"><select id="ct" style="width:120px" aria-label="Type">${CT.map(c=>`<option>${c}</option>`).join("")}</select><input id="cx" placeholder="What was discussed" aria-label="Log entry"><button class="ghost" id="cb" type="button">Log</button></div>
+ <div class="acts"><button class="ghost" id="del" type="button">Delete</button><button class="ghost" id="qb" type="button">Build offer sheet</button><button class="ghost" id="cl" type="button">Close</button><button class="pri" id="sv" type="button">Save changes</button></div>`);
+ const act=fn=>{apply(l);fn();save();render();open_(id)};
+ $("#cl").onclick=()=>d.close();
+ $("#del").onclick=()=>{D.leads=D.leads.filter(x=>x.id!==id);D.tasks=D.tasks.filter(t=>t.lead!==id);save();d.close();toast("Contact deleted");render()};
+ $("#sv").onclick=()=>{apply(l);const s=$("#f_stage").value;if(s!==l.stage)move(id,s);else save();d.close();toast("Saved");render()};
+ $("#pb").onclick=()=>{const a=+$("#pa").value;if(!a)return toast("Enter an amount");act(()=>l.pay.push({amt:a,at:day(0),k:l.pay.length?"Part payment":"Advance"}))};
+ $("#kb").onclick=()=>{const x=$("#kt").value.trim();if(!x)return toast("Enter a follow-up");act(()=>D.tasks.push({id:D.n++,lead:id,k:$("#kk").value,txt:x,due:$("#kd").value||day(2),done:false}))};
+ $("#cb").onclick=()=>{const x=$("#cx").value.trim();if(!x)return toast("Enter what was discussed");act(()=>l.log.unshift({t:$("#ct").value,txt:x,at:day(0)}))};
+ $("#qb").onclick=()=>{apply(l);save();render();offer(id)};
+}
+function offer(id){
+ const l=get(id),p0=mt0(l);let off=0;
+ dlg(`<h2>Offer sheet for ${esc(l.name)}</h2><label for="qp">Property</label><select id="qp">${D.props.map(p=>`<option value="${p.id}" ${p===p0?"selected":""}>${esc(p.t)} · ${p.area} · ${price(p)}</option>`).join("")}</select>
+ <div class="g"><div><label for="qo">Offer price (₹)</label><input id="qo" type="number" min="0"></div><div><label for="qk">Token amount %</label><input id="qk" type="number" min="0" value="10"></div></div>
+ <label for="qt">Offer text</label><textarea id="qt" rows="12" readonly></textarea>
+ <div class="acts"><button class="ghost" id="qx" type="button">Back to contact</button><button class="ghost" id="qc" type="button">Copy text</button><button class="pri" id="qa" type="button">Use as deal value</button></div>`);
+ const cur=()=>D.props.find(x=>x.id===+$("#qp").value);
+ const upd=()=>{const p=cur();off=+$("#qo").value||0;
+  $("#qt").value=`Offer sheet\nBuyer or tenant: ${l.name} (${l.phone})\nProperty: ${p.t}, ${p.area}\n${p.bhk} · ${p.sqft} sq ft · For ${p.mode.toLowerCase()}\n\nListed price: ${price(p)}\nOffer: ${m(off)}${p.mode==="Rent"?" /month":""}\nToken amount (${$("#qk").value||0}%): ${m(off*(+$("#qk").value||0)/100)}\nBrokerage (${l.rate}%): ${m(off*l.rate/100)}\n\nNext steps\n1. Seller confirms the offer\n2. Token paid and agreement drafted\n3. Registration and possession`};
+ $("#qp").onchange=()=>{$("#qo").value=cur().price;upd()};
+ $("#qo").value=p0.price;$("#qo").oninput=upd;$("#qk").oninput=upd;upd();
+ $("#qx").onclick=()=>open_(id);
+ $("#qc").onclick=()=>copy($("#qt"),$("#qt").value);
+ $("#qa").onclick=()=>{l.budget=off;if(l.stage==="New lead"||l.stage==="Site visit")move(id,"Negotiation");l.log.unshift({t:"Email",txt:"Offer sheet prepared: "+m(off),at:day(0)});save();render();open_(id);toast("Deal value updated")};
+}
+const mt0=l=>match(l)[0]||D.props.find(p=>p.area===l.area)||D.props[0];
+$("#add").onclick=()=>{
+ dlg(`<h2>New lead</h2><label for="n">Name</label><input id="n"><label for="ph">Phone</label><input id="ph">
+ <div class="g"><div><label for="ar">Preferred area</label><input id="ar" list="dl"><datalist id="dl">${AR.map(a=>`<option value="${a}">`).join("")}</datalist></div><div><label for="ty">Requirement</label><input id="ty" value="2 BHK"></div>${sel("kd","Looking to",KD,"Buyer")}<div><label for="b">Budget (₹)</label><input id="b" type="number" min="0" step="5000" value="8000000"></div></div>
+ <label for="a">Agent</label><select id="a">${AG.map(a=>`<option>${a}</option>`).join("")}</select>
+ <div class="acts"><button class="ghost" id="cl" type="button">Cancel</button><button class="pri" id="sv" type="button">Add lead</button></div>`);
+ $("#cl").onclick=()=>d.close();
+ $("#sv").onclick=()=>{const n=$("#n").value.trim(),ar=$("#ar").value.trim();if(!n||!ar)return toast("Enter a name and preferred area");const k=$("#kd").value;
+  D.leads.unshift({id:D.n++,name:n,phone:$("#ph").value.trim(),kind:k,area:ar,type:$("#ty").value.trim(),budget:+$("#b").value||0,rate:k==="Renter"?100:2,stage:"New lead",agent:$("#a").value,date:day(45),note:"",pay:[],log:[{t:"Email",txt:"Lead created",at:day(0)}]});
+  save();d.close();toast("Lead added");location.hash="#pipeline";view="pipeline";render()};
+};
+$("#csv").onclick=()=>{
+ const rows=[["Name","Phone","Looking to","Area","Requirement","Budget","Stage","Agent","Target date","Commission","Collected"],...D.leads.map(l=>[l.name,l.phone,l.kind,l.area,l.type,l.budget,l.stage,l.agent,l.date,com(l),paid(l)])];
+ const t=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+ dlg(`<h2>Export CSV</h2><p class="mute">Copy this into a spreadsheet or a .csv file.</p><textarea id="ct2" rows="10" readonly>${esc(t)}</textarea><div class="acts"><button class="ghost" id="cl" type="button">Close</button><button class="pri" id="cp" type="button">Copy CSV</button></div>`);
+ $("#cl").onclick=()=>d.close();$("#cp").onclick=()=>copy($("#ct2"),t);
+};
+$("#q").oninput=e=>{term=e.target.value.trim().toLowerCase();render()};
+$("#ag").onchange=e=>{ag=e.target.value;render()};
+$("#theme").onclick=()=>{const r=document.documentElement,dk=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=dk?"light":"dark"};
+const route=()=>{const h=location.hash.slice(1);view=V[h]?h:"dashboard";render()};
+addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
